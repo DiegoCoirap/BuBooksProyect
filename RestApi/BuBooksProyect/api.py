@@ -601,6 +601,25 @@ def modify_user(request, payload: ModifyUser):
 
 
 @csrf_exempt
+@api.put("/change-password", auth=AuthBearer())
+def change_password(request, payload: ChangePassword):
+    if payload is None:
+        return 422, "Invalid Body"
+    username = payload.username
+    user = get_object_or_404(User, username=username)
+    if user is not None:
+        user.set_password(str(payload.new_password))
+        user.save()
+        token = request.headers.get('Authorization')
+        auth_token = validate_token(token)
+        user_id = get_object_or_404(Token, key=auth_token)
+        user_id.delete()
+        return {"message": "User password has been successfully changed", "status": 200}
+    else:
+        return {"message": "Invalid Input", "status": 422}
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
