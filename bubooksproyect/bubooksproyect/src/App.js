@@ -11,6 +11,7 @@ import AuthorProfile from "./screens/user/authorProfile/AuthorProfile";
 import BookPageAuthor from "./screens/author/bookPage/BookPage";
 import CreateAuthor from "./screens/author/createProfile/CreateProfile";
 import EditAuthor from "./screens/author/editProfile/EditProfile";
+import LoginAuthor from "./screens/author/login/Login";
 
 function App() {
     function App() {
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/book/:id" element={<BookPageAuthor/>}/>
                 <Route path="/createProfile" element={<CreateAuthor/>}/>
                 <Route path="/editProfile" element={<EditAuthor/>}/>
+                <Route path='loginAuthor' element={<LoginAuthor/>}/>
             </Routes>
         );
     }
