@@ -8,6 +8,7 @@ import LoginUser from "./screens/user/login/Login";
 import UserProfile from "./screens/user/profile/Profile";
 import SignUpUser from "./screens/user/signUp/SignUp";
 import AuthorProfile from "./screens/user/authorProfile/AuthorProfile";
+import BookPageAuthor from "./screens/author/bookPage/BookPage";
 
 function App() {
     function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/userProfile" element={<UserProfile/>}/>
                 <Route path='signUpUser' element={<SignUpUser/>}/>
                 <Route path="/authorProfile/:alias" element={<AuthorProfile/>}/>
+                <Route path="/book/:id" element={<BookPageAuthor/>}/>
             </Routes>
         );
     }
