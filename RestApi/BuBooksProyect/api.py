@@ -1,8 +1,83 @@
-from ninja import Schema, NinjaAPI, ModelSchema
+# DJANGO IMPORTS
+from django.contrib.auth import authenticate
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+# DJANGO-NINJA IMPORTS
+from ninja import NinjaAPI, Schema, ModelSchema
+from ninja.security import HttpBearer
+
+# MODEL IMPORTS
+
 from .models import Book, Category, Cart, Comment, Author, Sale, Wishlist, UserExtraData
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from sqlite3 import IntegrityError
 
 api = NinjaAPI(csrf=False)
+
+
+def validate_token(token_header):
+    if token_header:
+        if token_header.startswith('Bearer '):
+            auth_token = token_header[7:]
+            return auth_token
+        else:
+            return 403, "UnAuthorized"
+    else:
+        return 403, "UnAuthorized"
+
+
+def retrieve_token(username):
+    user = get_object_or_404(User, username=username)
+    token = Token.objects.filter(user=user).first()
+    if token is None:
+        try:
+            token = Token.objects.create(user=user)
+        except token.DoesNotExist:
+            return 503, "Service Unavailable. Please retry later."
+
+    return token.key
+
+
+def retrieve_user(token_header):
+    auth_token = validate_token(token_header)
+    token_query = get_object_or_404(Token, key=auth_token)
+    user_query = get_object_or_404(User, username=token_query.user)
+    return user_query
+
+
+def retrieve_author(token_header):
+    user_query = retrieve_user(token_header)
+    author_query = get_object_or_404(Author, user=user_query.id)
+    return author_query
+
+
+def is_user_an_author(user):
+    User_extra_data = get_object_or_404(UserExtraData, user=user)
+    is_author = User_extra_data.is_author
+    return is_author
+
+
+class AuthBearer(HttpBearer):
+    def authenticate(self, request, key):
+        if request.headers.get('Authorization'):
+            token = request.headers.get('Authorization')
+            auth_token = validate_token(token)
+            try:
+                user_token = get_object_or_404(Token, key=auth_token)
+                user = get_object_or_404(User, username=user_token.user)
+            except Token.DoesNotExist:
+                return 403, "UnAuthorized"
+            try:
+                user_token = get_object_or_404(Token, user=user)
+            except Token.DoesNotExist:
+                return 403, "UnAuthorized"
+            if key == user_token.key:
+                return key
+        else:
+            return 403, "UnAuthorized"
 
 
 # api endpoints
@@ -156,3 +231,44 @@ class CommentOut(Schema):
 
 class GetBookComment(Schema):
     book: str
+
+
+@csrf_exempt
+@api.post("/sign-up-user", auth=None)
+def signup_user(request, user_petition: UserRegister):
+    user = {'username': user_petition.username, 'email': user_petition.email,
+            'password': user_petition.password}
+    try:
+        User.objects.create_user(**user)
+    except IntegrityError:
+        return HttpResponse('Username already exists.')
+    author_user = get_object_or_404(User, username=user_petition.username)
+    UserExtraData.objects.create(user=author_user, is_author=user_petition.is_author, avatar=None)
+
+    return {"status": 200, "message": "User has been successfully created"}
+
+
+@csrf_exempt
+@api.api_operation(["POST", "GET"], "/login", auth=None, response=LoginOut)
+def login(request, use: LogIn):
+    username = use.username
+    password = use.password
+    user_auth = authenticate(username=username, password=password)
+    is_author = is_user_an_author(user_auth)
+    if user_auth is not None:
+        token_key = retrieve_token(use.username)
+        login_data = {
+            'token': token_key,
+            'is_author': is_author
+        }
+        return login_data
+    else:
+        return {"status": 400, "detail": "Wrong Password or username"}
+
+
+@csrf_exempt
+@api.delete("/logout", auth=AuthBearer())
+def logout(request):
+    token = request.auth
+    Token.objects.filter(key=token).delete()
+    return {"status": 200, "message": "User LoggedOut successfully"}
