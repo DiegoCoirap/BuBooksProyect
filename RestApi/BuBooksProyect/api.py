@@ -566,11 +566,38 @@ def my_books(request):
 def language_options(request) -> list[LanguageOption]:
     return [LanguageOption(languageCode=choice[0], languageLabel=choice[1]) for choice in Book.Language.choices]
 
+
 @api.get("/categories", response=List[CategorySchema])
 def categories(request):
     queryset = Category.objects.all()
     return list(queryset)
 
+
+@csrf_exempt
+@api.put("/modify-author", auth=AuthBearer())
+def modify_author_data(request, author: AuthorIn):
+    token = request.headers.get('Authorization')
+    author_query = retrieve_author(token)
+    author_query.alias = author.alias
+    author_query.about_you = author.about_you
+    author_query.image = author.image
+    author_query.save()
+    return {"message": "Author profile has been created successfully", "status": 200}
+
+
+@csrf_exempt
+@api.put("/modify-user", auth=AuthBearer())
+def modify_user(request, payload: ModifyUser):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    if payload.username is not None:
+        user.username = payload.username
+    else:
+        raise
+    if payload.email is not None:
+        user.email = payload.email
+    user.save()
+    return {"message": "User has been modified successfully", "status": 200}
 
 
 @csrf_exempt
