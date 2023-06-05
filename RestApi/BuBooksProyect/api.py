@@ -323,6 +323,24 @@ def add_book_cart(request, payload: CartIn):
 
 
 @csrf_exempt
+@api.post("/add-book-wishlist", auth=AuthBearer())
+def add_book_wishlist(request, payload: WishListIn):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    is_author = is_user_an_author(user)
+    if is_author:
+        return 403, "UnAuthorized"
+    else:
+        book = get_object_or_404(Book, id=payload.book)
+        book_wishlist = Wishlist(
+            user_id=user.id,
+            book_id=book.id,
+        )
+        book_wishlist.save()
+        return {"status": 200, "message": "Book added to the Wishlist"}
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
