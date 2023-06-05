@@ -9,6 +9,7 @@ from ninja import NinjaAPI, Schema, ModelSchema
 from ninja.security import HttpBearer
 
 # MODEL IMPORTS
+
 from .models import Book, Category, Cart, Comment, Author, Sale, Wishlist, UserExtraData
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
