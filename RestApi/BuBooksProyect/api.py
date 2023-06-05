@@ -566,6 +566,12 @@ def my_books(request):
 def language_options(request) -> list[LanguageOption]:
     return [LanguageOption(languageCode=choice[0], languageLabel=choice[1]) for choice in Book.Language.choices]
 
+@api.get("/categories", response=List[CategorySchema])
+def categories(request):
+    queryset = Category.objects.all()
+    return list(queryset)
+
+
 
 @csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
