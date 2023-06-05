@@ -341,6 +341,27 @@ def add_book_wishlist(request, payload: WishListIn):
 
 
 @csrf_exempt
+@api.post("/create-comment", auth=AuthBearer())
+def create_comment(request, payload: CommentIn):
+    token_header = request.headers.get('Authorization')
+    user = retrieve_user(token_header)
+    is_author = is_user_an_author(user)
+    if is_author:
+        return 403, "UnAuthorized"
+    else:
+        book = get_object_or_404(Book, title=payload.book)
+        comment = Comment(
+            title=payload.title,
+            comment=payload.comment,
+            rating=payload.rating,
+            user=user,
+            book=book,
+        )
+        comment.save()
+        return {"status": 200, "message": "Comment created successfully"}
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
