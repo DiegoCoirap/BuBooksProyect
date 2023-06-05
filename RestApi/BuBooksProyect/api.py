@@ -1,4 +1,6 @@
 # DJANGO IMPORTS
+from datetime import datetime
+
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -341,8 +343,26 @@ def add_book_wishlist(request, payload: WishListIn):
 
 
 @csrf_exempt
+@api.post("/book-bought", auth=AuthBearer())
+def sale(request, payload: SalesIn):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    book = get_object_or_404(Book, id=payload.book)
+    book.sales = book.sales + 1
+    book.save()
+    book_sale = Sale(
+        date=datetime.now(),
+        user=user,
+        book=book,
+    )
+    book_sale.save()
+    return {"status": 200, "message": "Book bought successfully"}
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
     Token.objects.filter(key=token).delete()
     return {"status": 200, "message": "User LoggedOut successfully"}
+
