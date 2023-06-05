@@ -537,6 +537,31 @@ def cart(request):
 
 
 @csrf_exempt
+@api.get("/my-books", response=List[SalesOut], auth=AuthBearer())
+def my_books(request):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    try:
+        user_books = Sale.objects.filter(user_id=user.id)
+    except user_books.DoesNotExist:
+        return 404, "Object does not exist"
+    SchemaOut = []
+    for user_book in user_books:
+        books = Book.objects.get(id=user_book.book_id)
+        author = Author.objects.get(id=books.author_id)
+        book_info = {
+            'title': books.title,
+            'author': author.alias,
+            'language': books.language,
+            'book_cover': str(books.book_cover),
+            'book_file': str(books.book_file),
+            'date': str(user_book.date),
+        }
+        SchemaOut.append(book_info)
+    return SchemaOut
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
