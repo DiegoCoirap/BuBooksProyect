@@ -1,0 +1,63 @@
+.booksWithStars{
+    display: grid;
+    grid-template-columns:repeat(4,1fr);
+    margin-left: 20px;
+    grid-row-gap: 60px;
+}
+
+.bookPages{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.bookList{
+    display: flex;
+    margin: 10px;
+}
+.bookInformation{
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.paginator{
+    margin-left: 45%;
+}
+
+.pagination {
+    display: flex;
+    list-style-type: none;
+    grid-column: 1/4;
+}
+
+.pagination__link {
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 0.5rem;
+}
+
+.pagination__link--disabled {
+    color: lightgray;
+}
+
+.pagination__link--active {
+    text-decoration: underline;
+}
+
+.bookCover{
+    width: 100px;
+    height: 150px;
+}
+
+.bookTitle{
+    font-size: 16px;
+}
+
+.bookAuthor{
+    font-size: 12px;
+}
+
+.bookRating{
+    margin-top: 2px;
+}
