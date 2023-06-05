@@ -1,0 +1,44 @@
+.closeIcon{
+    cursor: pointer;
+}
+.userPopUpBackground{
+    background-color: white;
+    width: 164px;
+    height: 168px;
+    border-radius: 15px;
+    border: 1px #474954 solid;
+    position: fixed;
+    top: 60px;
+    right: 30px;
+}
+
+.popUpLoginButton{
+    position: absolute;
+    top: 30px;
+    left: 28px;
+    width: 108px;
+    height: 46px;
+    font-size: 20px;
+    background-color: #474954;
+    color: #B1BAD2;
+    border: none;
+    border-radius: 8px;
+}
+.popUpSignUpButton{
+    position: absolute;
+    top: 92px;
+    left: 28px;
+    width: 108px;
+    height: 46px;
+    font-size: 20px;
+    background-color: #B1BAD2;
+    color: #474954;
+    border: none;
+    border-radius: 8px;
+}
+
+.closeIcon{
+    position: absolute !important;
+    right: 5px !important;
+    top: 5px !important;
+}
