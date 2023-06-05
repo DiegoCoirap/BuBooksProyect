@@ -419,6 +419,29 @@ def author_profile(request, payload: AuthorOutNeed):
 
 
 @csrf_exempt
+@api.get("/book/{book_id}", response=BookOut)
+def specific_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    author = get_object_or_404(Author, id=book.author_id)
+    book_info = {
+        'id': book.id,
+        'title': book.title,
+        'author': str(author.alias),
+        'language': book.language,
+        'synopsis': book.synopsis,
+        'category': str(book.category),
+        'series': book.series,
+        'volumeNumber': book.volumeNumber,
+        'target_audience': book.target_audience,
+        'mature_content': book.mature_content,
+        'price': book.price,
+        'book_cover': str(book.book_cover),
+        'rating': book.rating
+    }
+    return book_info
+
+
+@csrf_exempt
 @api.api_operation(["POST", "GET"], "/comments", auth=None, response=List[CommentOut])
 def get_comments(request, payload: GetBookComment):
     book = get_object_or_404(Book, title=payload.book)
