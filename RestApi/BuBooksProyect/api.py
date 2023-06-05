@@ -487,6 +487,31 @@ def library(request):
     return list(SchemaOut)
 
 
+
+@csrf_exempt
+@api.get("/wish-list", response=List[WishListOut], auth=AuthBearer())
+def wish_list(request):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    try:
+        wishlist_books = Wishlist.objects.filter(user_id=user.id)
+    except wishlist_books.DoesNotExist:
+        return 404, "Object does not exist"
+    SchemaOut = []
+    for wishlist_book in wishlist_books:
+        books = Book.objects.get(id=wishlist_book.book_id)
+        author = Author.objects.get(id=books.author.id)
+        book_info = {
+            'title': books.title,
+            'author': author.alias,
+            'language': books.language,
+            'book_cover': str(books.book_cover),
+            'price': books.price
+        }
+        SchemaOut.append(book_info)
+    return SchemaOut
+
+
 @csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
