@@ -1,0 +1,33 @@
+.uploadBookPage{
+    background-image: url("../../../img/background.png") ;
+    background-repeat: repeat;
+    background-size: 100%;
+    min-height: 100vh;
+}
+
+.uploadBookPageMain{
+     background-color: white;
+    width: 93%;
+    margin: 0 auto;
+    min-height: 90vh;
+}
+
+.uploadBookPageMain h1{
+    text-align: center;
+    padding: 30px;
+}
+
+.uploadBookForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uploadBookForm input{
+    width: 300px;
+}
+
+.uploadBookForm label{
+    font-size: 24px;
+    padding-top: 20px;
+}
