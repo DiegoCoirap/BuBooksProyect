@@ -1,4 +1,4 @@
-from ninja import Schema, NinjaAPI
+from ninja import Schema, NinjaAPI, ModelSchema
 from .models import Book, Category, Cart, Comment, Author, Sale, Wishlist, UserExtraData
 from django.contrib.auth.models import User
 
