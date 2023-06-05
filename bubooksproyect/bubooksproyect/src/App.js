@@ -13,6 +13,7 @@ import CreateAuthor from "./screens/author/createProfile/CreateProfile";
 import EditAuthor from "./screens/author/editProfile/EditProfile";
 import LoginAuthor from "./screens/author/login/Login";
 import SignUpAuthor from "./screens/author/signUp/SignUp";
+import UploadBook from "./screens/author/uploadBook/UploadBook";
 
 function App() {
     function App() {
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/editProfile" element={<EditAuthor/>}/>
                 <Route path='loginAuthor' element={<LoginAuthor/>}/>
                 <Route path='signUpAuthor' element={<SignUpAuthor/>}/>
+                <Route path="/uploadBook" element={<UploadBook/>}/>
             </Routes>
         );
     }
