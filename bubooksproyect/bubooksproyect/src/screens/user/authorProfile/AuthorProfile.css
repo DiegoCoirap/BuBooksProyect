@@ -1,0 +1,53 @@
+.authorProfile{
+    background-image: url("../../../img/background.png") ;
+    background-repeat: repeat;
+    background-size: 100%;
+    min-height: 100vh;
+}
+
+.authorProfileMain{
+     background-color: white;
+    width: 93%;
+    margin: 0 auto;
+    min-height: 90vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.authorProfile img{
+    height: 150px;
+    padding: 10px;
+    width: 110px;
+}
+
+.authorProfileLeft{
+    width: 40%;
+    padding: 100px;
+    text-align: center;
+}
+
+.authorProfileLeft p{
+    text-align: justify;
+}
+
+
+
+.authorProfileRight{
+    text-align: center;
+
+    width: 60%;
+    padding: 100px;
+}
+
+.authorProfileRight ul{
+    display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    list-style-type: none;
+    text-align: center;
+}
+
+.authorProfileBook{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
