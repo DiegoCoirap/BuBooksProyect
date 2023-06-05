@@ -267,6 +267,48 @@ def login(request, use: LogIn):
 
 
 @csrf_exempt
+@api.post("/create-author", auth=AuthBearer())
+def create_author_data(request, author: AuthorIn):
+    try:
+        token = request.headers.get('Authorization')
+        auth_token = validate_token(token)
+        token_table = get_object_or_404(Token, key=auth_token)
+        user_query = get_object_or_404(User, username=token_table.user)
+        dictionary = {"user_id": user_query.id, "alias": author.alias, "about_you": author.about_you,
+                      "image": author.image}
+        Author.objects.create(**dictionary)
+        return {"status": 200, "message": "Author profile has been successfully created"}
+    except AttributeError:
+        return {"status": 403, "message": "UnAuthorized"}
+
+
+@csrf_exempt
+@api.post("/create-book", auth=AuthBearer())
+def create_book(request, created_book: BookIn):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    is_author = is_user_an_author(user)
+    if is_author:
+        author_query = retrieve_author(token)
+        book = Book(
+            author=author_query,
+            title=created_book.title,
+            language=created_book.language,
+            synopsis=created_book.synopsis,
+            series=created_book.series,
+            volumeNumber=created_book.volumeNumber,
+            target_audience=created_book.target_audience,
+            mature_content=created_book.mature_content,
+            price=created_book.price,
+            book_cover=created_book.book_cover,
+        )
+        book.save()
+        return {"status": 200, "message": "Book created successfully"}
+    else:
+        return 403, "UnAuthorized"
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
