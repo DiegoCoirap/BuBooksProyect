@@ -562,6 +562,13 @@ def my_books(request):
 
 
 @csrf_exempt
+@api.get("/categories", response=List[CategorySchema])
+def categories(request):
+    queryset = Category.objects.all()
+    return list(queryset)
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
