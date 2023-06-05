@@ -1,0 +1,134 @@
+.bookPageMain{
+    background-image: url("../../../img/background.png") ;
+    background-repeat: repeat;
+    background-size: 100%;
+    min-height: 100vh;
+}
+
+.bookPage{
+    background-color: white;
+    width: 93%;
+    margin: 0 auto;
+    min-height: 90vh;
+
+}
+.bookPageBookCover{
+    width: 260px;
+    height: 360px;
+    border: 7px #B1BAD2 solid;
+    border-radius: 5px;
+}
+
+.bookPageRating{
+    text-align: center;
+}
+
+.bookPageTitle{
+    text-align: center;
+    padding-top: 20px;
+    font-size: 32px;
+}
+.bookPageAuthor{
+    font-weight: normal;
+    font-size: 24px;
+    text-align: center;
+}
+
+.bookPageBody{
+    display: flex;
+    padding: 2% 10% ;
+    column-gap: 6%;
+}
+
+.bookPageInformation{
+    width: 45%;
+}
+
+.bookPageSinopsis{
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+.bookPagePriceAndButtons{
+    display: flex;
+    column-gap: 2%;
+}
+
+.bookPagePriceAndButtons p{
+    font-weight: bold;
+    font-size: 26px;
+
+}
+
+.bookPageButtons{
+    background-color: white;
+    border: none;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.bookpageAditional{
+    width: 250px;
+    border-left: 2px #242424 solid;
+    padding-left: 10px;
+    line-height: 60px;
+}
+
+.bookpageAditional span{
+    font-weight: bold;
+}
+
+.commentSection{
+    margin-left: 10%;
+    width: 60%;
+}
+.commentSection h3{
+    font-size: 24px;
+    margin-bottom: 20px ;
+}
+
+.bookPagecomment{
+    padding-bottom: 20px;
+}
+.addComment{
+    padding-bottom: 80px;
+    padding-bottom: 80px;
+}
+
+.addComment h4{
+    font-size: 24px;
+    margin-bottom: 20px ;
+}
+.commentBox{
+    background-color: #E4E7ED;
+    padding: 2%;
+    border-radius: 20px;
+}
+
+.commentBox p{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bookPageTextArea{
+    min-width: 95%;
+    min-height: 100px;
+    border: #242424 2px solid;
+}
+
+.bookPageRatingArea{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.commentSubmit{
+    padding: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #474954;
+    background-color: #B1BAD2;
+    border: none;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
