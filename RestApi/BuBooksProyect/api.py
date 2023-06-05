@@ -562,6 +562,12 @@ def my_books(request):
 
 
 @csrf_exempt
+@api.get("/language-options")
+def language_options(request) -> list[LanguageOption]:
+    return [LanguageOption(languageCode=choice[0], languageLabel=choice[1]) for choice in Book.Language.choices]
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
