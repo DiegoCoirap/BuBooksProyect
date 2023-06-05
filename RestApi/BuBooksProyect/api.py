@@ -1,5 +1,6 @@
 # DJANGO IMPORTS
 from datetime import datetime
+from typing import List
 
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
@@ -414,6 +415,25 @@ def author_profile(request, payload: AuthorOutNeed):
         return author_data
     else:
         return "User is not an author"
+
+
+@csrf_exempt
+@api.api_operation(["POST", "GET"], "/comments", auth=None, response=List[CommentOut])
+def get_comments(request, payload: GetBookComment):
+    book = get_object_or_404(Book, title=payload.book)
+    comments = Comment.objects.filter(book=book.id)
+    if comments is None:
+        return 404, "Object does not exist"
+    SchemaOut = []
+    for comment in comments:
+        comment_info = {
+            'title': comment.title,
+            'comment': comment.comment,
+            'rating': comment.rating,
+            'user': str(comment.user)
+        }
+        SchemaOut.append(comment_info)
+    return SchemaOut
 
 
 @csrf_exempt
