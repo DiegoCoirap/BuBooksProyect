@@ -1,10 +1,50 @@
 
+# DJANGO IMPORTS
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+
+# DJANGO-NINJA IMPORTS
 from ninja import NinjaAPI, Schema, ModelSchema
+from ninja.security import HttpBearer
+
 # MODEL IMPORTS
 from .models import Book, Category, Cart, Comment, Author, Sale, Wishlist, UserExtraData
 from django.contrib.auth.models import User
-
+from rest_framework.authtoken.models import Token
+from sqlite3 import IntegrityError
 api = NinjaAPI(csrf=False)
+
+
+def validate_token(token_header):
+    if token_header:
+        if token_header.startswith('Bearer '):
+            auth_token = token_header[7:]
+            return auth_token
+        else:
+            return 403, "UnAuthorized"
+    else:
+        return 403, "UnAuthorized"
+
+
+class AuthBearer(HttpBearer):
+    def authenticate(self, request, key):
+        if request.headers.get('Authorization'):
+            token = request.headers.get('Authorization')
+            auth_token = validate_token(token)
+            try:
+                user_token = get_object_or_404(Token, key=auth_token)
+                user = get_object_or_404(User, username=user_token.user)
+            except Token.DoesNotExist:
+                return 403, "UnAuthorized"
+            try:
+                user_token = get_object_or_404(Token, user=user)
+            except Token.DoesNotExist:
+                return 403, "UnAuthorized"
+            if key == user_token.key:
+                return key
+        else:
+            return 403, "UnAuthorized"
 
 
 # api endpoints
@@ -33,6 +73,7 @@ class LogIn(ModelSchema):
 
 
 class BookIn(Schema):
+    id: int
     title: str
     language: str
     synopsis: str
@@ -157,3 +198,19 @@ class CommentOut(Schema):
 
 class GetBookComment(Schema):
     book: str
+
+
+
+@csrf_exempt
+@api.post("/sign-up-user", auth=None)
+def signup_user(request, user_petition: UserRegister):
+    user = {'username': user_petition.username, 'email': user_petition.email,
+            'password': user_petition.password}
+    try:
+        User.objects.create_user(**user)
+    except IntegrityError:
+        return HttpResponse('Username already exists.')
+    author_user = get_object_or_404(User, username=user_petition.username)
+    UserExtraData.objects.create(user=author_user, is_author=user_petition.is_author, avatar=None)
+
+    return {"status": 200, "message": "User has been successfully created"}
