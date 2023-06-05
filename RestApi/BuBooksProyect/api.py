@@ -309,6 +309,20 @@ def create_book(request, created_book: BookIn):
 
 
 @csrf_exempt
+@api.post("/add-book-cart", auth=AuthBearer())
+def add_book_cart(request, payload: CartIn):
+    token = request.headers.get('Authorization')
+    user = retrieve_user(token)
+    book = get_object_or_404(Book, id=payload.book)
+    book_cart = Cart(
+        user_id=user.id,
+        book_id=book.id,
+    )
+    book_cart.save()
+    return {"status": 200, "message": "Book added to the Cart"}
+
+
+@csrf_exempt
 @api.delete("/logout", auth=AuthBearer())
 def logout(request):
     token = request.auth
