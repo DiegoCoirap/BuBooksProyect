@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # DJANGO-NINJA IMPORTS
 from ninja import NinjaAPI, Schema, ModelSchema
+from ninja.pagination import paginate
 from ninja.security import HttpBearer
 
 # MODEL IMPORTS
@@ -434,6 +435,33 @@ def get_comments(request, payload: GetBookComment):
         }
         SchemaOut.append(comment_info)
     return SchemaOut
+
+
+@csrf_exempt
+@api.get("/library", response=List[BookOut])
+@paginate
+def library(request):
+    books = Book.objects.all()
+    SchemaOut = []
+    for book in books:
+        author = get_object_or_404(Author, id=book.author_id)
+        book_info = {
+            'id': book.id,
+            'title': book.title,
+            'author': str(author.alias),
+            'language': book.language,
+            'synopsis': book.synopsis,
+            'category': str(book.category),
+            'series': book.series,
+            'volumeNumber': book.volumeNumber,
+            'target_audience': book.target_audience,
+            'mature_content': book.mature_content,
+            'price': book.price,
+            'book_cover': str(book.book_cover),
+            'rating': book.rating
+        }
+        SchemaOut.append(book_info)
+    return list(SchemaOut)
 
 
 @csrf_exempt
