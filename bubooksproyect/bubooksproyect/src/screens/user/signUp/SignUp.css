@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    color: #242424;
+}
+
+.boxSignUpUser{
+    margin-top: 50px;
+}
+
+.UbuttonSignUpUser{
+    background-color: #E4E7ED;
+    border: 0;
+    width: 200px;
+    height: 102px;
+    font-size: 32px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: relative;
+    left: 530px;
+    top: 3px;
+
+}
+
+.UbuttonSignUpAuthor{
+    background-color: #787E91;
+    border: 0;
+    width: 200px;
+    height: 102px;
+    font-size: 32px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: relative;
+    left: 1100px;
+    cursor: pointer;
+}
+
+.containerSignUpUser{
+    background-color: #E4E7ED;
+    width: 1071px;
+    height: 600px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0 auto;
+
+}
+
+.signUpH2{
+    font-size: 40px;
+    font-weight: normal;
+    padding-top: 50px;
+}
