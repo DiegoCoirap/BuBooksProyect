@@ -562,10 +562,15 @@ def my_books(request):
 
 
 @csrf_exempt
+@api.get("/language-options")
+def language_options(request) -> list[LanguageOption]:
+    return [LanguageOption(languageCode=choice[0], languageLabel=choice[1]) for choice in Book.Language.choices]
+
 @api.get("/categories", response=List[CategorySchema])
 def categories(request):
     queryset = Category.objects.all()
     return list(queryset)
+
 
 
 @csrf_exempt
