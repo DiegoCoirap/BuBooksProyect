@@ -7,6 +7,7 @@ import Cart from "./screens/user/cart/Cart";
 import LoginUser from "./screens/user/login/Login";
 import UserProfile from "./screens/user/profile/Profile";
 import SignUpUser from "./screens/user/signUp/SignUp";
+import AuthorProfile from "./screens/user/authorProfile/AuthorProfile";
 
 function App() {
     function App() {
@@ -20,6 +21,7 @@ function App() {
                 <Route path='loginUser' element={<LoginUser/>}/>
                 <Route path="/userProfile" element={<UserProfile/>}/>
                 <Route path='signUpUser' element={<SignUpUser/>}/>
+                <Route path="/authorProfile/:alias" element={<AuthorProfile/>}/>
             </Routes>
         );
     }
