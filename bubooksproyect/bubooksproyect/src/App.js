@@ -6,6 +6,7 @@ import BookPage from "./screens/user/bookPage/BookPage";
 import Cart from "./screens/user/cart/Cart";
 import LoginUser from "./screens/user/login/Login";
 import UserProfile from "./screens/user/profile/Profile";
+import SignUpUser from "./screens/user/signUp/SignUp";
 
 function App() {
     function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path='loginUser' element={<LoginUser/>}/>
                 <Route path="/userProfile" element={<UserProfile/>}/>
+                <Route path='signUpUser' element={<SignUpUser/>}/>
             </Routes>
         );
     }
