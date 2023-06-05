@@ -3,6 +3,7 @@ import NotFound from './screens/NotFound';
 import Main from "./screens/main/Main";
 import AuthorUserProfile from "./screens/user/authorProfile/AuthorProfile";
 import BookPage from "./screens/user/bookPage/BookPage";
+import Cart from "./screens/user/cart/Cart";
 
 function App() {
     function App() {
@@ -12,6 +13,7 @@ function App() {
                 <Route path='/' element={<Main/>}/>
                 <Route path="/author/:alias" element={<AuthorUserProfile/>}/>
                 <Route path='bookPage/:id' element={<BookPage/>}/>
+                <Route path="/cart" element={<Cart/>}/>
             </Routes>
         );
     }
